@@ -1,0 +1,54 @@
+save_data: data/asr-yt-only/run/model_data
+## Where the vocab(s) will be written
+src_vocab: data/asr-yt-only/run/vocab.en.src
+tgt_vocab: data/asr-yt-only/run/vocab.ta.tgt
+
+# Corpus opts:
+data:
+    en-ta:
+        path_src: data/asr-yt-only/train.en
+        path_tgt: data/asr-yt-only/train.ta
+        transforms: [sentencepiece, filtertoolong]
+    valid:
+        path_src: data/asr-yt-only/val.en
+        path_tgt: data/asr-yt-only/val.ta
+        transforms: [sentencepiece]
+
+encoder_type: brnn
+decoder_type: rnn
+enc_layers: 2
+dec_layers: 2
+rnn_type: LSTM
+global_attention: mlp
+optim: "adam"
+learning_rate: 0.001
+dropout: 0.1
+learning_rate_decay: 0.5
+
+### Transform related opts:
+#### Subword
+src_subword_model: data/asr-yt-only/sp/en_model.model
+tgt_subword_model: data/asr-yt-only/sp/ta_model.model
+src_subword_vocab: data/asr-yt-only/sp/en_model.vocab
+tgt_subword_vocab: data/asr-yt-only/sp/ta_model.vocab
+
+#### Filter
+src_seq_length: 50
+tgt_seq_length: 50
+
+# silently ignore empty lines in the data
+skip_empty_level: silent
+
+# General opts
+save_model: data/asr-yt-only/run/model
+save_checkpoint_steps: 1000
+train_steps: 10000
+valid_steps: 1000
+
+#Train on single GPU
+world_size: 1
+gpu_ranks: [0]
+
+#Logs
+tensorboard: true
+tensorboard_log_dir: logs
